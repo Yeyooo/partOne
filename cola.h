@@ -72,7 +72,33 @@ void mostrarCola(Cola *unaCola){
 
 }
 
-void BFS(Nodo unGrafo[8], Nodo unNodo){
+int contarAdyacentes(int indiceNodo){
+    int contador=0,j;
+
+    for(j=0;j<8;j++){
+        if(matrizEnlaces[indiceNodo][j]==1)
+            contador++;
+    }
+    return contador;
+}
+
+void inicializarValoresArregloNodosAdyancentes(int *NodosAdyacentes, int indiceNodo){ //necesita el indice para saber desde que fila buscar en la matriz
+    getchar();
+    *NodosAdyacentes=(int*)malloc(sizeof(int)*contarAdyacentes(indiceNodo)); // aqui esta el error
+    getchar();
+    int j=0, newi=0;
+    while(j<8 && newi!=contarAdyacentes(indiceNodo)){ // quizas es la cantidad de adyacentes +1;
+
+        if(matrizEnlaces[indiceNodo][j]==1){
+            NodosAdyacentes[newi]=j;
+            newi++;
+        }
+        j++;
+    }
+
+}
+
+void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
 
     int i=0;
 
@@ -86,14 +112,21 @@ void BFS(Nodo unGrafo[8], Nodo unNodo){
     unNodo.distancia=0;
     Encolar(Coula, unNodo);
     while(Coula->primero!=NULL){
+
         Nodo u;
         u=Decolar(Coula); // sino necesito cambiar y que decolar devuelva solo el nodoGrafo y no todo el nodo cola
 
-        while('a'==4){ // obtener el indice para poder darselo a la condicion de abajo
-            if (unGrafo[i].distancia==99){
-                unGrafo[i].distancia=u.distancia + 1;
-                unGrafo[i].padre=&u;
-                Encolar(Coula, unGrafo[i]);
+        int *NodosAdyacentes;//[contarAdyacentes(i)];
+        printf ("hola"); getchar();
+        inicializarValoresArregloNodosAdyancentes(NodosAdyacentes,indiceUnNodo);
+        int itmp;
+        for(itmp=0;itmp<=contarAdyacentes(indiceUnNodo);itmp++){ //falta obtener indices
+            while(indiceUnNodo<=contarAdyacentes(indiceUnNodo)){
+                if (unGrafo[NodosAdyacentes[itmp]].distancia==99){
+                    unGrafo[NodosAdyacentes[itmp]].distancia=u.distancia + 1;
+                    unGrafo[NodosAdyacentes[itmp]].padre=&u;
+                    Encolar(Coula, unGrafo[NodosAdyacentes[itmp]]);
+                }
             }
         }
     }

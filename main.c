@@ -18,18 +18,17 @@
 #define COLA_H
 #endif
 
-int main(){
-
+int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAAAAAAAAAA
     //mostrarMatriz();
 
     Nodo arregloNodos[8];
-	iniciarArreglodeNodos(arregloNodos);/*
+	iniciarArreglodeNodos(arregloNodos);
     int i;
     for(i=0;i<8;i++)
         printf("color:%c, d:%d, etiqueta:%c, padre:%p, td:%d, tf:%d \n", arregloNodos[i].color, arregloNodos[i].distancia, arregloNodos[i].etiqueta, arregloNodos[i].padre, arregloNodos[i].tiempoD, arregloNodos[i].tiempoF);
-    */
 
-    Cola *Colita=iniciarCola();
+    BFS(arregloNodos, arregloNodos[0], 0);
+    /*Cola *Colita=iniciarCola();
 
     Encolar(Colita, arregloNodos[0]);
     Encolar(Colita, arregloNodos[1]);
@@ -51,7 +50,19 @@ int main(){
     printf("%c \n", tmp->nodoGrafo.etiqueta);
     tmp->nodoGrafo=Decolar(Colita);
     printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
+    tmp->nodoGrafo=Decolar(Colita);*/
+
+    /*mostrarMatriz();
+    int x=contarAdyacentes(2);
+    printf("adyacentes: %d\n", x);
+    int *arreglo;
+    inicializarValoresArregloNodosAdyancentes(arreglo, 2);
+    int i=0;
+    while(i<4){
+        printf("arreglo[%d]:%d\n", i, arreglo[i]);
+        i++;
+    }*/
+
 
 
 
