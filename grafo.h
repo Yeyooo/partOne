@@ -8,6 +8,7 @@
 #define STDLIB_H
 #endif
 
+
 typedef struct t_nodo{
     char color;// W white, B black, G grey;
     struct t_nodo *padre;
@@ -51,3 +52,5 @@ void mostrarMatriz(){
         printf("\n\n");
     }
 }
+
+
