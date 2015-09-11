@@ -23,11 +23,11 @@ int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAA
 
     Nodo arregloNodos[8];
 	iniciarArreglodeNodos(arregloNodos);
-    int i;
+    /*int i;
     for(i=0;i<8;i++)
         printf("color:%c, d:%d, etiqueta:%c, padre:%p, td:%d, tf:%d \n", arregloNodos[i].color, arregloNodos[i].distancia, arregloNodos[i].etiqueta, arregloNodos[i].padre, arregloNodos[i].tiempoD, arregloNodos[i].tiempoF);
 
-    BFS(arregloNodos, arregloNodos[0], 0);
+    BFS(arregloNodos, arregloNodos[0], 0);*/
     /*Cola *Colita=iniciarCola();
 
     Encolar(Colita, arregloNodos[0]);

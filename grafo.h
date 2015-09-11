@@ -53,4 +53,36 @@ void mostrarMatriz(){
     }
 }
 
+void visitaDFS(Nodo unGrafo[8], Nodo unNodo, int tiempo){
+    tiempo++;
+    unNodo.tiempoD=tiempo;
+    unNodo.color='g';
+    int i;//esta wea es pa dejar el for funcional nomas, BORRAR!
+    for(i=0;i<8;i++){ // esto tambien, necesito moverme por los adyacentes a un nodo, mirar pseudo
+            if(unGrafo[i].color=='w'){
+                unGrafo[i].padre=&unNodo;
+                visitaDFS(unGrafo, unGrafo[i], tiempo);
+            }
+    }
+    unNodo.color='b';
+    tiempo++;
+    unNodo.tiempoF=tiempo;
+
+}
+
+void DFS(Nodo unGrafo[8]){
+    int i;
+    for(i=0;i<8;i++){
+        unGrafo[i].color='w';
+        unGrafo[i].padre=NULL;
+    }
+    int tiempo=0;
+    for(i=0;i<8;i++){
+        if(unGrafo[i].color=='w')
+            visitaDFS(unGrafo, unGrafo[i], tiempo);
+    }
+
+
+}
+
 
