@@ -8,6 +8,8 @@
 #define STDLIB_H
 #endif
 
+#define TAM 8
+
 
 typedef struct t_nodo{
     char color;// W white, B black, G grey;
@@ -53,24 +55,27 @@ void mostrarMatriz(){
     }
 }
 
-void visitaDFS(Nodo unGrafo[8], Nodo unNodo, int tiempo){
+void visitaDFS(Nodo unNodo, int tiempo, int indiceUnNodo, Nodo unGrafo[TAM]){
+    (unNodo).color='g';
     tiempo++;
-    unNodo.tiempoD=tiempo;
-    unNodo.color='g';
-    int i;//esta wea es pa dejar el for funcional nomas, BORRAR!
-    for(i=0;i<8;i++){ // esto tambien, necesito moverme por los adyacentes a un nodo, mirar pseudo
-            if(unGrafo[i].color=='w'){
-                unGrafo[i].padre=&unNodo;
-                visitaDFS(unGrafo, unGrafo[i], tiempo);
-            }
-    }
-    unNodo.color='b';
-    tiempo++;
-    unNodo.tiempoF=tiempo;
+    (unNodo).tiempoD=tiempo;
 
+
+    int itmp, yaVisto=-1, iNodoAdy;
+    for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ // esto tambien, necesito moverme por los adyacentes a un nodo, mirar pseudo
+        iNodoAdy=indiceNodoAdyacente(indiceUnNodo);
+        if((unGrafo[iNodoAdy]).color=='w'){
+            (unGrafo[iNodoAdy]).padre=&unNodo;
+            visitaDFS(unGrafo[iNodoAdy], tiempo, iNodoAdy, unGrafo);// si no es indiceUnNodo es iNodoAdy
+        }
+        yaVisto=iNodoAdy;
+    }
+    (unNodo).color='b';
+    tiempo++;
+    (unNodo).tiempoF=tiempo;
 }
 
-void DFS(Nodo unGrafo[8]){
+void DFS(Nodo unGrafo[TAM]){
     int i;
     for(i=0;i<8;i++){
         unGrafo[i].color='w';
@@ -79,7 +84,7 @@ void DFS(Nodo unGrafo[8]){
     int tiempo=0;
     for(i=0;i<8;i++){
         if(unGrafo[i].color=='w')
-            visitaDFS(unGrafo, unGrafo[i], tiempo);
+            visitaDFS(unGrafo[i], tiempo, i, unGrafo);
     }
 
 

@@ -18,50 +18,19 @@
 #define COLA_H
 #endif
 
+#define TAM 8
+
 int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAAAAAAAAAA
     //mostrarMatriz();
 
     Nodo arregloNodos[8];
 	iniciarArreglodeNodos(arregloNodos);
-    /*int i;
-    for(i=0;i<8;i++)
-        printf("color:%c, d:%d, etiqueta:%c, padre:%p, td:%d, tf:%d \n", arregloNodos[i].color, arregloNodos[i].distancia, arregloNodos[i].etiqueta, arregloNodos[i].padre, arregloNodos[i].tiempoD, arregloNodos[i].tiempoF);
+    int i;
 
-    BFS(arregloNodos, arregloNodos[0], 0);*/
-    /*Cola *Colita=iniciarCola();
+    BFS(arregloNodos, arregloNodos[0], 0);
 
-    Encolar(Colita, arregloNodos[0]);
-    Encolar(Colita, arregloNodos[1]);
-    Encolar(Colita, arregloNodos[2]);
-    Encolar(Colita, arregloNodos[3]);
-    Encolar(Colita, arregloNodos[4]);
-    Encolar(Colita, arregloNodos[5]);
+    //DFS(arregloNodos);
 
-    nodoCola *tmp=iniciarCola();
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);
-    printf("%c \n", tmp->nodoGrafo.etiqueta);
-    tmp->nodoGrafo=Decolar(Colita);*/
-
-    /*mostrarMatriz();
-    int x=contarAdyacentes(2);
-    printf("adyacentes: %d\n", x);
-    int *arreglo;
-    inicializarValoresArregloNodosAdyancentes(arreglo, 2);
-    int i=0;
-    while(i<4){
-        printf("arreglo[%d]:%d\n", i, arreglo[i]);
-        i++;
-    }*/
 
 
 

@@ -13,6 +13,8 @@
 #define GRAFO_H
 #endif
 
+#define TAM 8
+
 typedef struct _nodo{
     struct _nodo *sgte, *primero, *ultimo;
     Nodo nodoGrafo;
@@ -82,7 +84,18 @@ int contarAdyacentes(int indiceNodo){
     return contador;
 }
 
-void inicializarValoresArregloNodosAdyancentes(int *NodosAdyacentes, int indiceNodo){ //necesita el indice para saber desde que fila buscar en la matriz
+int indiceNodoAdyacente(int indiceNodo, int iNodoYaVisto){ // si es -1, significa que aun no devolvemos ningun indice de un nodo adyacente
+    //if(iNodoYaVisto==-1){// condicion al parecer innecesaria
+        int j;
+        for(j=0;j<TAM;j++){
+            if(matrizEnlaces[indiceNodo][j]==1 && j!=iNodoYaVisto)
+                return j;
+
+        }
+
+}
+
+/*void inicializarValoresArregloNodosAdyancentes(int *NodosAdyacentes, int indiceNodo){ //necesita el indice para saber desde que fila buscar en la matriz
     getchar();
     *NodosAdyacentes=(int*)malloc(sizeof(int)*contarAdyacentes(indiceNodo)); // aqui esta el error
     getchar();
@@ -96,39 +109,61 @@ void inicializarValoresArregloNodosAdyancentes(int *NodosAdyacentes, int indiceN
         j++;
     }
 
+}*/
+
+void mostrarNodo(Nodo unNodo){
+    printf("Valores del nodo:\n");
+    printf("color: %c\n", unNodo.color);
+    printf("distancia: %d\n", unNodo.distancia);
+    printf("etiqueta: %c\n", unNodo.etiqueta);
+    printf("tiempoD: %d\n", unNodo.tiempoD);
+    printf("tiempoF: %d\n", unNodo.tiempoF);
+    printf("Padre: %p\n", unNodo.padre);
+
 }
 
 void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
 
-    int i=0;
+    int i;
 
     for(i=0;i<8;i++){
         unGrafo[i].distancia = 99;
         unGrafo[i].padre = NULL;
+        //mostrarNodo(unGrafo[i]);
     }
 
-    Cola *Coula=iniciarCola();
-
+    unNodo.color='g';
     unNodo.distancia=0;
+    //mostrarNodo(unNodo);
+    Cola *Coula=iniciarCola();
     Encolar(Coula, unNodo);
+
     while(Coula->primero!=NULL){
 
         Nodo u;
         u=Decolar(Coula); // sino necesito cambiar y que decolar devuelva solo el nodoGrafo y no todo el nodo cola
+        //printf("valor u:\n\n");mostrarNodo(u);
+        int itmp, yaVisto=-1, iNodoAdy;
+        printf("contar ady: %d\n", contarAdyacentes(indiceUnNodo));getchar();
+        for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ //falta obtener indices
+            iNodoAdy=indiceNodoAdyacente(indiceUnNodo, yaVisto);
+            printf("iNodoady: %d\n", iNodoAdy);getchar();
 
-        int *NodosAdyacentes;//[contarAdyacentes(i)];
-        printf ("hola"); getchar();
-        inicializarValoresArregloNodosAdyancentes(NodosAdyacentes,indiceUnNodo);
-        int itmp;
-        for(itmp=0;itmp<=contarAdyacentes(indiceUnNodo);itmp++){ //falta obtener indices
-            while(indiceUnNodo<=contarAdyacentes(indiceUnNodo)){
-                if (unGrafo[NodosAdyacentes[itmp]].distancia==99){
-                    unGrafo[NodosAdyacentes[itmp]].distancia=u.distancia + 1;
-                    unGrafo[NodosAdyacentes[itmp]].padre=&u;
-                    Encolar(Coula, unGrafo[NodosAdyacentes[itmp]]);
-                }
+            //printf("color nodo ady: %c y inodo: %d\n", unGrafo[iNodoAdy].color, iNodoAdy);
+            if (unGrafo[iNodoAdy].color=='w'){//printf("entre");
+                unGrafo[iNodoAdy].color='g';
+                unGrafo[iNodoAdy].distancia=u.distancia + 1;
+                unGrafo[iNodoAdy].padre=&u;
+                Encolar(Coula, unGrafo[iNodoAdy]); //printf("dentro if: \n\n");
+                //mostrarNodo(unGrafo[iNodoAdy]);
             }
+            mostrarNodo(u); // NO PASA LOS CAMBIOS AL GRAFO REAL.
+            u.color='b';//no se si funciona esto
+            yaVisto=iNodoAdy;
+
         }
+        //printf("while\n");
     }
+
 
 }
