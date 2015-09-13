@@ -28,7 +28,9 @@ int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAA
     int i;
 
     BFS(arregloNodos, arregloNodos[0], 0);
-
+    /*int x=indiceNodoAdyacente(0,-1);
+    x=indiceNodoAdyacente(0,1);
+    printf("%d\n", x);*/
 
 
 
