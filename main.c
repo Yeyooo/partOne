@@ -29,7 +29,6 @@ int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAA
 
     BFS(arregloNodos, arregloNodos[0], 0);
 
-    //DFS(arregloNodos);
 
 
 

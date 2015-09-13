@@ -16,60 +16,73 @@
 #define TAM 8
 
 typedef struct _nodo{
-    struct _nodo *sgte, *primero, *ultimo;
+    struct _nodo *sgte;
     Nodo nodoGrafo;
+    int i_nodoGrafo;
 }nodoCola;
 
-typedef nodoCola Cola;
+typedef struct t_cola{
+    nodoCola*primero,*ultimo;
+    int tamano;
+}Cola;
 
 Cola *iniciarCola(){
-    Cola *tmp=(nodoCola*)malloc(sizeof(struct _nodo));
+    Cola *tmp=(Cola*)malloc(sizeof(struct t_cola));
+    tmp->tamano=0;
+    tmp->primero=tmp->ultimo=NULL;
 
-    tmp->nodoGrafo=iniciarNodo('\0');
-    tmp->primero=tmp->sgte=tmp->ultimo=NULL;
     return tmp;
 }
 
-void Encolar(Cola *unaCola, Nodo unNodo){// meter un elemento, crear nodo aux44
-    nodoCola *aux=(nodoCola*)malloc(sizeof(struct _nodo));
-    aux->nodoGrafo=unNodo;
-    aux->sgte=NULL;
-
-    if(unaCola->primero==NULL){
-        unaCola->primero=unaCola->ultimo=aux;
-        unaCola->sgte=NULL;
-        printf("Agregado al principio exitosamente\n");
-    }else{
-        nodoCola *ventana=unaCola->ultimo;
-        ventana=aux;
-        unaCola->ultimo->sgte=ventana;
-        unaCola->ultimo=ventana;
-        printf("Agregado exitosamente!\n");
-    }
-
+int esVacia(Cola *unaCola){
+    if(unaCola->tamano==0)
+        return 1;
+    else
+        return 0;
 }
 
-Nodo Decolar(Cola *unaCola){// sacar un elemento
-    if(unaCola->primero!=NULL){
-        nodoCola *aux=(nodoCola*)malloc(sizeof(struct _nodo));
-        aux=unaCola->primero;
-        unaCola->primero=unaCola->primero->sgte;
+void Encolar(Cola *unaCola, Nodo unNodo, int indiceNodoGrafo){// meter un elemento, crear nodo aux44
+    nodoCola *nuevo = (nodoCola*)malloc(sizeof(struct _nodo));
 
-        printf("Sacado exitosamente\n");
+    nuevo->nodoGrafo = unNodo;
+    nuevo->i_nodoGrafo = indiceNodoGrafo;
+    nuevo->sgte = NULL;
 
-        return aux->nodoGrafo;
+    if(esVacia(unaCola)==1){
+        unaCola->primero=nuevo;
+        unaCola->ultimo=nuevo;
     }else{
-        printf("No hay mas elementos en la cola\n");
+        unaCola->ultimo->sgte = nuevo;
+        unaCola->ultimo = nuevo;
     }
+    unaCola->tamano++;
+}
+
+nodoCola *Decolar(Cola *unaCola){// sacar un elemento
+    if(esVacia(unaCola)==1) printf("La Cola esta vacia pero hare igual la accion\n");
+    nodoCola *tmp;
+    nodoCola* nodoAtendido=(nodoCola*)malloc(sizeof(struct _nodo));
+    tmp = unaCola->primero;
+    unaCola->primero = unaCola->primero->sgte;
+    nodoAtendido = tmp;
+    free(tmp);
+    unaCola->tamano--;
+    return(nodoAtendido);
 
 }
 
 void mostrarCola(Cola *unaCola){
-    nodoCola *aux=(nodoCola*)malloc(sizeof(struct _nodo));
-    aux=unaCola->primero;
-    while(aux!=unaCola->ultimo){
-        int i;
+    nodoCola*actual;
+    actual=unaCola->primero;
+    int i;
+    for(i = 0; i<unaCola->tamano; i++){
+        printf("unaCola[%d] = %c\n", i, actual->nodoGrafo.etiqueta);
+        actual = actual->sgte;
     }
+    if(esVacia(unaCola)==1){
+        printf("La Cola esta vacia.\n");
+    }else
+        printf("Fin de la cola !!\n");
 
 
 }
@@ -81,7 +94,7 @@ int contarAdyacentes(int indiceNodo){
         if(matrizEnlaces[indiceNodo][j]==1)
             contador++;
     }
-    return contador;
+        return contador; //si no hubiesen enlaces no deberia ejecutarse el for
 }
 
 int indiceNodoAdyacente(int indiceNodo, int iNodoYaVisto){ // si es -1, significa que aun no devolvemos ningun indice de un nodo adyacente
@@ -92,6 +105,7 @@ int indiceNodoAdyacente(int indiceNodo, int iNodoYaVisto){ // si es -1, signific
                 return j;
 
         }
+        return 99;
 
 }
 
@@ -129,41 +143,37 @@ void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
     for(i=0;i<8;i++){
         unGrafo[i].distancia = 99;
         unGrafo[i].padre = NULL;
-        //mostrarNodo(unGrafo[i]);
     }
 
     unNodo.color='g';
     unNodo.distancia=0;
-    //mostrarNodo(unNodo);
     Cola *Coula=iniciarCola();
-    Encolar(Coula, unNodo);
+    Encolar(Coula, unNodo, indiceUnNodo);
+    while(esVacia(Coula)!=1){
 
-    while(Coula->primero!=NULL){
+        nodoCola *u=(nodoCola*)malloc(sizeof(struct _nodo));
+        u=Decolar(Coula);
+        indiceUnNodo=u->i_nodoGrafo;
 
-        Nodo u;
-        u=Decolar(Coula); // sino necesito cambiar y que decolar devuelva solo el nodoGrafo y no todo el nodo cola
-        //printf("valor u:\n\n");mostrarNodo(u);
-        int itmp, yaVisto=-1, iNodoAdy;
-        printf("contar ady: %d\n", contarAdyacentes(indiceUnNodo));getchar();
-        for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ //falta obtener indices
+        int itmp, yaVisto=-1, iNodoAdy; // HAY QUE AGREGAR EL INDICE DEL ENCOLADO
+
+        for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ //INDICE UN NODO NO CAMBIA!
             iNodoAdy=indiceNodoAdyacente(indiceUnNodo, yaVisto);
-            printf("iNodoady: %d\n", iNodoAdy);getchar();
+            printf("iNodoAdy: %d\n", iNodoAdy), getchar();
 
-            //printf("color nodo ady: %c y inodo: %d\n", unGrafo[iNodoAdy].color, iNodoAdy);
-            if (unGrafo[iNodoAdy].color=='w'){//printf("entre");
+            if (unGrafo[iNodoAdy].color=='w' && indiceNodoAdyacente(indiceUnNodo, yaVisto)!=99){
                 unGrafo[iNodoAdy].color='g';
-                unGrafo[iNodoAdy].distancia=u.distancia + 1;
-                unGrafo[iNodoAdy].padre=&u;
-                Encolar(Coula, unGrafo[iNodoAdy]); //printf("dentro if: \n\n");
-                //mostrarNodo(unGrafo[iNodoAdy]);
+                unGrafo[iNodoAdy].distancia=u->nodoGrafo.distancia + 1;
+                unGrafo[iNodoAdy].padre=&u->nodoGrafo;
+                Encolar(Coula, unGrafo[iNodoAdy], iNodoAdy);
             }
-            mostrarNodo(u); // NO PASA LOS CAMBIOS AL GRAFO REAL.
-            u.color='b';//no se si funciona esto
+            //no se si funciona esto
             yaVisto=iNodoAdy;
+            mostrarCola(Coula);getchar();
 
         }
-        //printf("while\n");
-    }
+        u->nodoGrafo.color='b';
 
+    }
 
 }
