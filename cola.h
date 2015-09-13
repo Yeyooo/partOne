@@ -110,21 +110,7 @@ int indiceNodoAdyacente(int indiceNodo, int iNodoYaVisto){ // si es -1, signific
 
 }
 
-/*void inicializarValoresArregloNodosAdyancentes(int *NodosAdyacentes, int indiceNodo){ //necesita el indice para saber desde que fila buscar en la matriz
-    getchar();
-    *NodosAdyacentes=(int*)malloc(sizeof(int)*contarAdyacentes(indiceNodo)); // aqui esta el error
-    getchar();
-    int j=0, newi=0;
-    while(j<8 && newi!=contarAdyacentes(indiceNodo)){ // quizas es la cantidad de adyacentes +1;
 
-        if(matrizEnlaces[indiceNodo][j]==1){
-            NodosAdyacentes[newi]=j;
-            newi++;
-        }
-        j++;
-    }
-
-}*/
 
 void mostrarNodo(Nodo unNodo){
     printf("Valores del nodo:\n");
@@ -137,51 +123,6 @@ void mostrarNodo(Nodo unNodo){
 
 }
 
-/*void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
-
-    int i;
-
-    for(i=0;i<8;i++){
-        unGrafo[i].distancia = 99;
-        unGrafo[i].padre = NULL;
-    }
-
-    unNodo.color='g';
-    unNodo.distancia=0;
-    Cola *Coula=iniciarCola();
-    Encolar(Coula, unNodo, indiceUnNodo);
-    while(esVacia(Coula)!=1){
-
-        nodoCola *u=(nodoCola*)malloc(sizeof(struct _nodo));
-        u=Decolar(Coula);
-        indiceUnNodo=u->i_nodoGrafo;
-
-        int itmp, yaVisto=-1, iNodoAdy; // HAY QUE AGREGAR EL INDICE DEL ENCOLADO
-        int contador=0;
-        for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ //INDICE UN NODO NO CAMBIA!
-            iNodoAdy=indiceNodoAdyacente(indiceUnNodo, yaVisto, contarAdyacentes(indiceUnNodo), &contador);
-            printf("iNodoAdy: %d, unGrafo[%d]: %c, u: %c\n", iNodoAdy, iNodoAdy, unGrafo[iNodoAdy].etiqueta, u->nodoGrafo.etiqueta), getchar();
-
-            if (unGrafo[iNodoAdy].color=='w' && indiceNodoAdyacente(indiceUnNodo, yaVisto, contarAdyacentes(indiceUnNodo), &contador)!=99){
-                unGrafo[iNodoAdy].color='g';
-                unGrafo[iNodoAdy].distancia=u->nodoGrafo.distancia + 1;
-                unGrafo[iNodoAdy].padre=&u->nodoGrafo;
-                printf("iNodoAdy: %d, unGrafo[%d]: %c, u: %c\n", iNodoAdy, iNodoAdy, unGrafo[iNodoAdy].etiqueta, u->nodoGrafo.etiqueta), getchar();
-                mostrarCola(Coula);getchar();
-                printf("primero: %c", Coula->primero->nodoGrafo.etiqueta); getchar();
-                Encolar(Coula, unGrafo[iNodoAdy], iNodoAdy); // AQUI SE CAE EN EL NODO F CON ADYACENTE E AL ENCOLAR
-                printf("aqui estoy\n"); getchar();
-            }
-
-            yaVisto=iNodoAdy;
-            mostrarCola(Coula);getchar();
-
-        }
-        u->nodoGrafo.color='b';
-
-    }
-
-}*/
 
 void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
     nodoCola*u=(nodoCola*)malloc(sizeof(struct _nodo));
@@ -196,30 +137,38 @@ void BFS(Nodo unGrafo[8], Nodo unNodo, int indiceUnNodo){
     unGrafo[0].distancia=0;
     unGrafo[0].padre=NULL;
     Cola *Coula=iniciarCola();
-    Encolar(Coula, unGrafo[0], 0);
+    Encolar(Coula, unGrafo[indiceUnNodo], indiceUnNodo);
 
     while(esVacia(Coula)!=1){
-        u=Decolar(Coula);
-        int yaVisto=-1,iNodoAdy=indiceNodoAdyacente(u->i_nodoGrafo, yaVisto);
+        *u=*Decolar(Coula);
+        printf("u->i_nodo: %d\n", u->i_nodoGrafo);
+        int yaVisto=-1,iNodoAdy;
 
         for(i=0;i<contarAdyacentes(u->i_nodoGrafo);i++){
-                printf("u: %c, iNodoady: %d\n", u->nodoGrafo.etiqueta, iNodoAdy);
+            printf("u->i_nodo: %d\n", u->i_nodoGrafo);
+            iNodoAdy=indiceNodoAdyacente(u->i_nodoGrafo, yaVisto);
+        printf("u->i_nodo: %d\n", u->i_nodoGrafo);
             if(unGrafo[iNodoAdy].color=='w'){
+                    printf("u->i_nodo: %d\n", u->i_nodoGrafo);
+                printf("primera vez en if: iNodoady: %d\n", iNodoAdy);
                 unGrafo[iNodoAdy].color='g';
                 unGrafo[iNodoAdy].distancia=(u->nodoGrafo.distancia)+1;
                 unGrafo[iNodoAdy].padre=&u->nodoGrafo;
+            printf("u->i_nodo: %d u: %c ahora\n", u->i_nodoGrafo, u->nodoGrafo.etiqueta); //aqui error!
                 Encolar(Coula, unGrafo[iNodoAdy], iNodoAdy);
+                printf("u->i_nodo: %d, u: %c\n", u->i_nodoGrafo, u->nodoGrafo.etiqueta);
             }
             yaVisto=iNodoAdy;
-        printf("yaVisto: %d, u->i_nodoGrafo: %d, iNodoAy: %d\n", yaVisto, u->i_nodoGrafo, iNodoAdy);
-            iNodoAdy=indiceNodoAdyacente(u->i_nodoGrafo, yaVisto); // no cambia de forma correcta
+            printf("u->i_nodoGrafo: %d, yaVisto: %d\n", u->i_nodoGrafo, yaVisto);
+            // // no cambia de forma correcta
+            printf("ver aqui : iNodoAdy: %d\n", iNodoAdy);
             mostrarCola(Coula);getchar();
         }
         unGrafo[u->i_nodoGrafo].color='b';
 
     }
     for(i=0;i<TAM;i++){
-        printf(" distancias: %d ", unGrafo[i].distancia);
+        printf(" color: %c ", unGrafo[i].color);
     }
 
 

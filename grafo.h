@@ -55,39 +55,66 @@ void mostrarMatriz(){
     }
 }
 
-void visitaDFS(Nodo unNodo, int tiempo, int indiceUnNodo, Nodo unGrafo[TAM]){
-    (unNodo).color='g';
-    tiempo++;
-    (unNodo).tiempoD=tiempo;
+/*void visitaDFS(Nodo *unGrafo[TAM], int tiempo, int indiceUnNodo){
+    (*unGrafo[indiceUnNodo]).color='g';
 
+    tiempo++;
+    (*unGrafo[indiceUnNodo]).tiempoD=tiempo;
 
     int itmp, yaVisto=-1, iNodoAdy;
     for(itmp=0;itmp<(contarAdyacentes(indiceUnNodo));itmp++){ // esto tambien, necesito moverme por los adyacentes a un nodo, mirar pseudo
+        printf("hola\n"); getchar();
+        printf("unGrafo[%d]: %c\n", iNodoAdy , (*unGrafo[indiceUnNodo]).color);
         iNodoAdy=indiceNodoAdyacente(indiceUnNodo);
-        if((unGrafo[iNodoAdy]).color=='w'){
-            (unGrafo[iNodoAdy]).padre=&unNodo;
-            visitaDFS(unGrafo[iNodoAdy], tiempo, iNodoAdy, unGrafo);// si no es indiceUnNodo es iNodoAdy
+        if((*unGrafo[iNodoAdy]).color=='w'){
+            (*unGrafo[iNodoAdy]).padre=(unGrafo[indiceUnNodo]);
+            visitaDFS(unGrafo, tiempo, iNodoAdy);// si no es indiceUnNodo es iNodoAdy
         }
         yaVisto=iNodoAdy;
     }
-    (unNodo).color='b';
+    (*unGrafo[indiceUnNodo]).color='b';
     tiempo++;
-    (unNodo).tiempoF=tiempo;
+    (*unGrafo[indiceUnNodo]).tiempoF=tiempo;
 }
 
 void DFS(Nodo unGrafo[TAM]){
     int i;
     for(i=0;i<8;i++){
-        unGrafo[i].color='w';
-        unGrafo[i].padre=NULL;
+        (unGrafo[i]).color='w';
+        (unGrafo[i]).padre=NULL;
     }
     int tiempo=0;
     for(i=0;i<8;i++){
-        if(unGrafo[i].color=='w')
-            visitaDFS(unGrafo[i], tiempo, i, unGrafo);
+        if((unGrafo[i]).color=='w')
+            visitaDFS(&unGrafo, tiempo, i);
     }
 
 
+}*/
+void DFS(Nodo unGrafo[TAM], int indiceOrigen, int tiempo){
+    tiempo++;
+    (unGrafo[indiceOrigen]).color='g';
+    (unGrafo[indiceOrigen]).tiempoD=tiempo;
+    int itmp, yaVisto=-1, iNodoAdy;
+    for(itmp=0;itmp<(contarAdyacentes(indiceOrigen));itmp++){ // esto tambien, necesito moverme por los adyacentes a un nodo, mirar pseudo
+        iNodoAdy=indiceNodoAdyacente(indiceOrigen, yaVisto);
+        if((unGrafo[iNodoAdy]).color=='w'){
+            (unGrafo[iNodoAdy]).color='b';
+            DFS(unGrafo, iNodoAdy, tiempo);
+        }
+        yaVisto=iNodoAdy;
+    }
+    (unGrafo[indiceOrigen]).color='b';
+
+    (unGrafo[indiceOrigen]).tiempoF=tiempo+1;
+    int i;
+    for(i=0;i<TAM;i++){
+        printf("unGrafo[%d]: tiempoD: %d, tiempoF: %d\n", i , unGrafo[i].tiempoD, unGrafo[i].tiempoF);
+        getchar();
+    }
+
 }
+
+
 
 
