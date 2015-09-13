@@ -20,20 +20,14 @@
 
 #define TAM 8
 
-int main(){ ///////// FALTA SOLUCIONAR LA WEA DEL PUNTERO DE MIERDAAAAAAAAAAAAAAAAAAAAAA
-    //mostrarMatriz();
+int main(){ // Los Colores son w=blanco, g=gris, b=negro
 
-    Nodo arregloNodos[8];
+    Nodo arregloNodos[TAM];
 	iniciarArreglodeNodos(arregloNodos);
     int i, tiempo=0;
 
-    //BFS(arregloNodos, arregloNodos[0], 0);
-    DFS(arregloNodos, 0, tiempo);
-
-
-
-
-
+    BFS(arregloNodos, arregloNodos[0], 0); //DEJAR EN COMENTARIO PARA USAR EL SIGUIENTE
+    // DFS(arregloNodos, 0, tiempo);
 
 
 
